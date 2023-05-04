@@ -14,10 +14,10 @@ interface UserMenuProps {
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
-  console.log(currentUser);
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const [isOpen, setIsOpen] = useState(false);
+
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
@@ -42,15 +42,41 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
-                <MenuItem onClick={() => {}} label="My trips"></MenuItem>
-                <MenuItem onClick={() => {}} label="My favorites"></MenuItem>
-                <MenuItem onClick={() => {}} label="My reservations"></MenuItem>
-                <MenuItem onClick={() => {}} label="My properties"></MenuItem>
-                <MenuItem onClick={() => {}} label="Airbnb my home"></MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    toggleOpen();
+                  }}
+                  label="My favorites"
+                ></MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    toggleOpen();
+                  }}
+                  label="My trips"
+                ></MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    toggleOpen();
+                  }}
+                  label="My reservations"
+                ></MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    toggleOpen();
+                  }}
+                  label="My properties"
+                ></MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    toggleOpen();
+                  }}
+                  label="Airbnb my home"
+                ></MenuItem>
                 <hr />
                 <MenuItem
                   onClick={() => {
                     signOut();
+                    toggleOpen();
                   }}
                   label="Logout"
                 ></MenuItem>
@@ -60,12 +86,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                 <MenuItem
                   onClick={() => {
                     loginModal.onOpen();
+                    toggleOpen();
                   }}
                   label="Login"
                 ></MenuItem>
                 <MenuItem
                   onClick={() => {
                     registerModal.onOpen();
+                    toggleOpen();
                   }}
                   label="Sign up"
                 ></MenuItem>

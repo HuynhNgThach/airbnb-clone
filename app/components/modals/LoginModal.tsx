@@ -1,18 +1,17 @@
 "use client";
-import React, { useState } from "react";
-import axios from "axios";
-import { AiFillGithub } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import useRegisterModal from "@/app/hooks/useRegisterModal";
-import Modal from "./Modal";
-import Heading from "../Heading";
-import Input from "../inputs/Input";
-import { toast } from "react-hot-toast";
-import Button from "../Button";
 import useLoginModal from "@/app/hooks/useLoginModal";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { AiFillGithub } from "react-icons/ai";
+import { FcGoogle } from "react-icons/fc";
+import Button from "../Button";
+import Heading from "../Heading";
+import Input from "../inputs/Input";
+import Modal from "./Modal";
 
 const LoginModal = () => {
   const registerModal = useRegisterModal();
@@ -46,6 +45,10 @@ const LoginModal = () => {
       if (callback?.error) toast.error(callback.error);
     });
   };
+  const toggle = useCallback(() => {
+    loginModal.onClose();
+    registerModal.onOpen();
+  }, [loginModal, registerModal]);
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading title="Welcome back " subtitle="Login to your account!" />
@@ -75,7 +78,9 @@ const LoginModal = () => {
         outline
         label="Continue with google"
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => {
+          signIn("google");
+        }}
       />
       <Button
         outline
@@ -90,7 +95,10 @@ const LoginModal = () => {
         onClick={loginModal.onClose}
       >
         <div>Not have an account?</div>
-        <div className="text-neutral-800 cursor-pointer hover:underline">
+        <div
+          className="text-neutral-800 cursor-pointer hover:underline"
+          onClick={toggle}
+        >
           Register
         </div>
       </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import axios from "axios";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
@@ -11,10 +11,17 @@ import Input from "../inputs/Input";
 import { toast } from "react-hot-toast";
 import Button from "../Button";
 import { signIn } from "next-auth/react";
+import useLoginModal from "@/app/hooks/useLoginModal";
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
   const [isLoading, setIsLoading] = useState(false);
+  const loginModal = useLoginModal();
+
+  const toggle = useCallback(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [loginModal, registerModal]);
 
   const {
     register,
@@ -80,7 +87,9 @@ const RegisterModal = () => {
         outline
         label="Continue with google"
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => {
+          signIn("google");
+        }}
       />
       <Button
         outline
@@ -95,7 +104,10 @@ const RegisterModal = () => {
         onClick={registerModal.onClose}
       >
         <div>Already have an account?</div>
-        <div className="text-neutral-800 cursor-pointer hover:underline">
+        <div
+          className="text-neutral-800 cursor-pointer hover:underline"
+          onClick={toggle}
+        >
           Log in
         </div>
       </div>
